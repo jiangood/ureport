@@ -95,7 +95,7 @@ public class FileReportProvider implements ReportProvider {
 
     @Override
     public String getName() {
-        return "服务器文件系统" + storeDir;
+        return "文件系统" + storeDir;
     }
 
     @Override

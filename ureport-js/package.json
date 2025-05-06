@@ -1,6 +1,6 @@
 {
   "name": "ureport2-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ureport2.0 designer base on web and some web ui",
   "main": "index.js",
   "scripts": {

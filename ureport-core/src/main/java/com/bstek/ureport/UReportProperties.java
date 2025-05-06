@@ -21,16 +21,5 @@ public class UReportProperties {
     String fileStoreDir = "/ureport-files";
 
 
-    /**
-     * class 启用
-     */
-    boolean classpathStoreEnable = true;
-
-    /**
-     *
-     */
-    String classpathStoreDir = "ureport-files";
-
-
 
 }

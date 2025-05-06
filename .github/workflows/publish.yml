@@ -47,7 +47,7 @@ jobs:
 
 
       - name: Publish MAVEN
-        run: mvn -q deploy
+        run: mvn -q deploy -P publishMavenCentral
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}

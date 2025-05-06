@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -25,8 +25,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
-import org.springframework.util.Base64Utils;
 
 import com.bstek.ureport.exception.ReportComputeException;
 import com.bstek.ureport.image.ChartImageProcessor;
@@ -46,13 +46,13 @@ public class ImageUtils {
 		ChartImageProcessor chartImageProcessor=new ChartImageProcessor();
 		imageProcessorMap.put(ImageType.chart, chartImageProcessor);
 	}
-	
+
 	public static InputStream base64DataToInputStream(String base64Data){
-		byte[] bytes=Base64Utils.decodeFromString(base64Data);
+		byte[] bytes=Base64.decodeBase64(base64Data);
 		ByteArrayInputStream inputStream=new ByteArrayInputStream(bytes);
 		return inputStream;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static String getImageBase64Data(ImageType type,Object data,int width,int height){
 		ImageProcessor<Object> targetProcessor=(ImageProcessor<Object>)imageProcessorMap.get(type);
@@ -72,7 +72,7 @@ public class ImageUtils {
 		        inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 			}
 			byte[] bytes=IOUtils.toByteArray(inputStream);
-			return Base64Utils.encodeToString(bytes);
+			return Base64.encodeBase64String(bytes);
 		}catch(Exception ex){
 			throw new ReportComputeException(ex);
 		}finally{
