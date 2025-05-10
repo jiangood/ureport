@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2017 Bstek
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.  You may obtain a copy
  * of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -24,9 +24,9 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.Base64Utils;
 
 import com.bstek.ureport.build.BindData;
 import com.bstek.ureport.build.Context;
@@ -52,7 +52,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  * @since 2017年3月27日
  */
 public class ZxingValueCompute implements ValueCompute {
-	private static final int BLACK = 0xff000000;  
+	private static final int BLACK = 0xff000000;
     private static final int WHITE = 0xFFFFFFFF;
 	@Override
 	public List<BindData> compute(Cell cell, Context context) {
@@ -61,7 +61,7 @@ public class ZxingValueCompute implements ValueCompute {
 		String format=value.getFormat();
 		BarcodeFormat barcodeForamt=BarcodeFormat.QR_CODE;
 		if(StringUtils.isNotBlank(format)){
-			barcodeForamt=BarcodeFormat.valueOf(format);			
+			barcodeForamt=BarcodeFormat.valueOf(format);
 		}
 		int w=value.getWidth();
 		int h=value.getHeight();
@@ -116,17 +116,17 @@ public class ZxingValueCompute implements ValueCompute {
 		}
 		return list;
 	}
-	
+
 	private Image buildImage(BarcodeFormat format,String data,int w,int h){
         try{
-        	Map<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();  
+        	Map<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             hints.put(EncodeHintType.MARGIN,0);
             if(format.equals(BarcodeFormat.QR_CODE)){
-            	hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);            	
+            	hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             }
             BitMatrix matrix = new MultiFormatWriter().encode(data,format, w, h,hints);
-            int width = matrix.getWidth();  
+            int width = matrix.getWidth();
             int height = matrix.getHeight();
             BufferedImage image = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
             for (int x = 0; x < width; x++) {
@@ -137,7 +137,7 @@ public class ZxingValueCompute implements ValueCompute {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ImageIO.write(image, "png", outputStream);
             byte[] bytes=outputStream.toByteArray();
-            String base64Data=Base64Utils.encodeToString(bytes);
+            String base64Data= Base64.encodeBase64String(bytes);
             IOUtils.closeQuietly(outputStream);
             return new Image(base64Data,w,h);
         }catch(Exception ex){
