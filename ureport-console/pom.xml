@@ -10,6 +10,11 @@
 	<artifactId>ureport-console</artifactId>
 	<name>ureport-console</name>
 	<dependencies>
+		<dependency>
+			<groupId>io.github.jiangood</groupId>
+			<artifactId>ureport-core</artifactId>
+			<version>1.0.5</version>
+		</dependency>
 		<!--引入AOP依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -30,11 +35,7 @@
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
 		</dependency>
-		<dependency>
-			<groupId>io.github.jiangood</groupId>
-			<artifactId>ureport-core</artifactId>
-			<version>1.0.4</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
