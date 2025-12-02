@@ -1,5 +1,5 @@
 # ureport-spring
-基于开源项目ureport2的spring版后台
+基于开源项目ureport2的springboot3.x版
 
 ureport用起来挺顺手，为了简化修复bug及新增功能，将其修改为spring版本
 
