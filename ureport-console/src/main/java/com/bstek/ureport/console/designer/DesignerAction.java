@@ -199,9 +199,6 @@ public class DesignerAction extends BaseAction {
     public void init() {
         Collection<ReportProvider> providers = applicationContext.getBeansOfType(ReportProvider.class).values();
         for (ReportProvider provider : providers) {
-            if (provider.disabled() || provider.getName() == null) {
-                continue;
-            }
             reportProviders.add(provider);
         }
     }
