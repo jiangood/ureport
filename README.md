@@ -18,7 +18,7 @@ ureport用起来挺顺手，为了简化修复bug及新增功能，将其修改�
 ### 2.启动项目
 访问 http://localhost:8080/ureport/designer 
 
-### 3 可选配值
+### 3 可选配置
 配置文件中 application.yml 增加配置,ureport开头，ide会自动提示
 
 [UReportProperties.java](ureport-core%2Fsrc%2Fmain%2Fjava%2Fcom%2Fbstek%2Fureport%2FUReportProperties.java)
