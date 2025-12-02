@@ -62,7 +62,7 @@ public class FileReportProvider implements ReportProvider {
 
     @Override
     public String getName() {
-        return "文件夹 (" + storeDir + ")";
+        return "文件夹 (" + storeDir.getAbsolutePath() + ")";
     }
 
     @Override
