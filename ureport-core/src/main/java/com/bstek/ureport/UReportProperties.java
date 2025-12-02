@@ -14,7 +14,7 @@ public class UReportProperties {
     /**
      * 文件存储目录
      */
-    private String fileStoreDir = "ureport-files";
+    private String fileStoreDir = "ureport-dir";
 
     /**
      * 可选， 数据库配置，默认使用jdbc数据源

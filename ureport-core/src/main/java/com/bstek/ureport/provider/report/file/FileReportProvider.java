@@ -15,118 +15,77 @@
  ******************************************************************************/
 package com.bstek.ureport.provider.report.file;
 
+import cn.hutool.core.io.FileUtil;
 import com.bstek.ureport.UReportProperties;
-import com.bstek.ureport.exception.ReportException;
 import com.bstek.ureport.provider.report.ReportFile;
 import com.bstek.ureport.provider.report.ReportProvider;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-/**
- * @author Jacky.gao
- * @since 2017年2月11日
- */
+
 @Component
 public class FileReportProvider implements ReportProvider {
-    private String prefix = "file:";
+    private static final String PREFIX = "file:";
 
-    @Resource
-    private UReportProperties props;
+    private final File storeDir;
 
-    private String storeDir;
-
-    @PostConstruct
-    public void init() throws IOException {
-        storeDir = props.getFileStoreDir();
-            FileUtils.forceMkdir(new File(storeDir));
+    public FileReportProvider(UReportProperties props) throws IOException {
+        storeDir = new File(props.getFileStoreDir());
+        FileUtils.forceMkdir(storeDir);
     }
-
 
 
     @Override
     public String loadReport(String file) {
-        if (file.startsWith(prefix)) {
-            file = file.substring(prefix.length());
-        }
-        String fullPath = storeDir + "/" + file;
-        try {
-            return FileUtils.readFileToString(new File(fullPath), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new ReportException(e);
-        }
+        File finalFile = getFinalFile(file);
+        return FileUtil.readUtf8String(finalFile);
     }
 
     @Override
     public void deleteReport(String file) {
-        if (file.startsWith(prefix)) {
-            file = file.substring(prefix.length());
-        }
-        String fullPath = storeDir + "/" + file;
-        File f = new File(fullPath);
-        if (f.exists()) {
-            f.delete();
-        }
+        File finalFile = getFinalFile(file);
+        FileUtil.del(finalFile);
     }
 
     @Override
     public List<ReportFile> getReportFiles() {
-        File file = new File(storeDir);
-        List<ReportFile> list = new ArrayList<>();
-        for (File f : file.listFiles()) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(f.lastModified());
-            list.add(new ReportFile(f.getName(), calendar.getTime()));
-        }
-        Collections.sort(list, (f1, f2) -> f2.getUpdateDate().compareTo(f1.getUpdateDate()));
-        return list;
+        Collection<File> files = FileUtils.listFiles(storeDir, null, true);
+        return files.stream()
+                .map(f -> new ReportFile(f.getName(), parseFileDate(f)))
+                .sorted(Comparator.comparing(ReportFile::getUpdateDate))
+                .toList();
     }
 
     @Override
     public String getName() {
-        return "文件系统" + storeDir;
+        return "文件夹 (" + storeDir + ")";
     }
 
     @Override
     public void saveReport(String file, String content) {
-        if (file.startsWith(prefix)) {
-            file = file.substring(prefix.length());
-        }
-        String fullPath = storeDir + "/" + file;
-        FileOutputStream outStream = null;
-        try {
-            outStream = new FileOutputStream(fullPath);
-            IOUtils.write(content, outStream, "utf-8");
-        } catch (Exception ex) {
-            throw new ReportException(ex);
-        } finally {
-            if (outStream != null) {
-                try {
-                    outStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
+        File finalFile = getFinalFile(file);
+        FileUtil.writeUtf8String(content, finalFile);
     }
 
+    private File getFinalFile(String file) {
+        if (file.startsWith(PREFIX)) {
+            file = file.substring(PREFIX.length());
+        }
+        return new File(storeDir, file);
+    }
 
-
+    private Date parseFileDate(File file) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(file.lastModified());
+        return calendar.getTime();
+    }
 
     @Override
     public String getPrefix() {
-        return prefix;
+        return PREFIX;
     }
 }

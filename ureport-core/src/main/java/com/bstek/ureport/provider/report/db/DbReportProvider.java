@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +77,7 @@ public class DbReportProvider implements ReportProvider {
             // Table doesn't exist, create it
             log.info("Table doesn't exist, create it");
             String ddl = "create table " + tableName + "(" +
-                    columnId + " int primary key ," +
+                    columnId + " char(32) primary key ," +
                     columnName + " varchar(80)," +
                     columnContent + " longtext," +
                     columnUpdateTime + " timestamp)";
@@ -109,8 +110,11 @@ public class DbReportProvider implements ReportProvider {
         List<ReportFile> list = new ArrayList<>();
         for (Map<String, Object> map : mapList) {
             String name = (String) map.get(columnName);
-            Long updateTime = (Long) map.get(columnUpdateTime);
-            list.add(new ReportFile(name, new Date(updateTime)));
+            if(name.startsWith(PREFIX)){
+                name = name.substring(PREFIX.length());
+            }
+            Timestamp updateTime = (Timestamp) map.get(columnUpdateTime);
+            list.add(new ReportFile(name, updateTime));
         }
 
         return list;
