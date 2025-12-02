@@ -115,13 +115,14 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public void saveReport(String file, String content) {
-        String id = IdUtil.simpleUUID();
         String old = this.loadReport(file);
         if (old == null) {
             String sql = "insert into " + tableName + "(" + columnId + "," + columnName + "," + columnContent + "," + columnUpdateTime + ") values(?,?,?,?)";
-            jdbcTemplate.update(sql, file, content, new Date());
+            jdbcTemplate.update(sql, IdUtil.fastSimpleUUID(), file, content, new Date());
+            return;
         }
-
+        String sql = "update " + tableName + " set " + columnContent + "=?, " + columnUpdateTime + "=? where " + columnName + "=?";
+        jdbcTemplate.update(sql, content, new Date(), file);
     }
 
     @Override
