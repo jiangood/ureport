@@ -52,10 +52,7 @@ public interface ReportProvider {
 	 * @return 返回存储器名称
 	 */
 	String getName();
-	/**
-	 * @return 返回是否禁用
-	 */
-	boolean disabled();
+
 	/**
 	 * @return 返回报表文件名前缀, 如classpath:, db:
 	 */

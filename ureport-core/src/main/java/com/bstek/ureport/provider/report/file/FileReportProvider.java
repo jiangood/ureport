@@ -101,12 +101,12 @@ public class FileReportProvider implements ReportProvider {
     @Override
     public void saveReport(String file, String content) {
         if (file.startsWith(prefix)) {
-            file = file.substring(prefix.length(), file.length());
+            file = file.substring(prefix.length());
         }
         String fullPath = storeDir + "/" + file;
         FileOutputStream outStream = null;
         try {
-            outStream = new FileOutputStream(new File(fullPath));
+            outStream = new FileOutputStream(fullPath);
             IOUtils.write(content, outStream, "utf-8");
         } catch (Exception ex) {
             throw new ReportException(ex);
@@ -120,11 +120,6 @@ public class FileReportProvider implements ReportProvider {
             }
         }
 
-    }
-
-    @Override
-    public boolean disabled() {
-        return !props.isFileStoreEnable();
     }
 
 
