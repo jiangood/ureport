@@ -6,7 +6,7 @@
 	<groupId>io.github.jiangood</groupId>
 	<artifactId>ureport-parent</artifactId>
 
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<packaging>pom</packaging>
 
 	<name>UReport</name>
@@ -60,20 +60,7 @@
 		</dependency>
 	</dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.github.jiangood</groupId>
-				<artifactId>ureport-core</artifactId>
-				<version>1.0.3</version>
-			</dependency>
-			<dependency>
-				<groupId>io.github.jiangood</groupId>
-				<artifactId>ureport-console</artifactId>
-				<version>1.0.3</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+
 
 	<profiles>
 		<profile>
