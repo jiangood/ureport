@@ -16,6 +16,10 @@ ureport用起来挺顺手，为了简化修复bug及新增功能，将其修改�
 ```
 2. 启动项目后访问 http://localhost:8080/ureport/designer 
 
+## 示例项目
+可参考示例项目
+https://github.com/jiangood/ureport-example
+
 ## 文档
 https://www.w3cschool.cn/ureport/
 
