@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 
-	<groupId>io.github.tmgg</groupId>
+	<groupId>io.github.jiangood</groupId>
 	<artifactId>ureport-parent</artifactId>
 
 	<version>1.0.3</version>
@@ -64,12 +64,12 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>io.github.tmgg</groupId>
+				<groupId>io.github.jiangood</groupId>
 				<artifactId>ureport-core</artifactId>
 				<version>1.0.3</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.tmgg</groupId>
+				<groupId>io.github.jiangood</groupId>
 				<artifactId>ureport-console</artifactId>
 				<version>1.0.3</version>
 			</dependency>

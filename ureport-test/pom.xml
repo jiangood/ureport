@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ureport-parent</artifactId>
-        <groupId>io.github.tmgg</groupId>
+        <groupId>io.github.jiangood</groupId>
         <version>1.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -33,7 +33,7 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.tmgg</groupId>
+            <groupId>io.github.jiangood</groupId>
             <artifactId>ureport-console</artifactId>
         </dependency>
     </dependencies>

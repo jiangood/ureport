@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ureport-core</artifactId>
 	<parent>
-		<groupId>io.github.tmgg</groupId>
+		<groupId>io.github.jiangood</groupId>
 		<artifactId>ureport-parent</artifactId>
 		<version>1.0.3</version>
 	</parent>
