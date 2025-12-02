@@ -25,26 +25,6 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
 
-      - name: get project version
-        id: pv
-        run: |
-          pv=$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
-          echo "::set-output name=result::$pv"
-
-
-      - name: get git tag version
-        id: tv
-        uses: revam/gh-action-get-tag-and-version@v1
-        with:
-          tag: ${{ github.ref }}
-
-      - name: Check Tag version
-        if: ${{ steps.pv.outputs.result != steps.tv.outputs.version_short}}
-        uses: actions/github-script@v4
-        with:
-          script: core.setFailed('Invalid Tag:${{github.ref_name}} project version:${{steps.pv.outputs.result}} tag version:${{steps.tv.outputs.version_short}} ')
-
-
 
       - name: Publish MAVEN
         run: mvn -q deploy -P publishMavenCentral

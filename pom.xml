@@ -49,7 +49,6 @@
 	<modules>
 		<module>ureport-core</module>
 		<module>ureport-console</module>
-		<module>ureport-test</module>
 	</modules>
 
 
