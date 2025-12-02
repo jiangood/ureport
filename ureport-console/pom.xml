@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.github.jiangood</groupId>
 		<artifactId>ureport-parent</artifactId>
-		<version>1.0.3</version>
+		<version>1.0.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ureport-console</artifactId>
@@ -32,6 +32,7 @@
 		<dependency>
 			<groupId>io.github.jiangood</groupId>
 			<artifactId>ureport-core</artifactId>
+			<version>1.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
