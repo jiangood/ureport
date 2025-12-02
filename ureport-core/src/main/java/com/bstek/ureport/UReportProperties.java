@@ -12,14 +12,26 @@ public class UReportProperties {
 
 
     /**
-     * 文件存储 启用
-     */
-    boolean fileStoreEnable = true;
-    /**
      * 文件存储目录
      */
-    String fileStoreDir = "/ureport-files";
+    private String fileStoreDir = "ureport-files";
+
+    /**
+     * 可选， 数据库配置，默认使用jdbc数据源
+     */
+
+    private DbConfig dbConfig = new DbConfig();
 
 
+    @Data
+    public static class DbConfig {
 
+
+        private String tableName = "sys_ureport";
+
+        private String columnId = "id";
+        private String columnName = "file";
+        private String columnContent = "content";
+        private String columnUpdateTime = "update_time";
+    }
 }

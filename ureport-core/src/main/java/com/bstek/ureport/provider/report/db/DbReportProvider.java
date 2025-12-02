@@ -15,6 +15,8 @@
  ******************************************************************************/
 package com.bstek.ureport.provider.report.db;
 
+import cn.hutool.core.util.IdUtil;
+import com.bstek.ureport.UReportProperties;
 import com.bstek.ureport.provider.report.ReportFile;
 import com.bstek.ureport.provider.report.ReportProvider;
 import jakarta.annotation.PostConstruct;
@@ -34,60 +36,57 @@ import java.util.Map;
 
 @Component
 @ConditionalOnBean(DataSource.class)
-@ConditionalOnMissingBean(DbReportProvider.class)
 @NoArgsConstructor
 public class DbReportProvider implements ReportProvider {
 
-    private static final String DEFAULT_TABLE_NAME = "sys_ureport";
 
-    private static final String DEFAULT_COLUMN_ID = "id";
-    private static final String DEFAULT_COLUMN_NAME = "file";
-    private static final String DEFAULT_COLUMN_CONTENT = "content";
-    private static final String DEFAULT_COLUMN_UPDATE_TIME = "update_time";
+    private String tableName;
 
+    private String columnId;
+    private String columnName;
+    private String columnContent;
 
-    private String tableName = DEFAULT_TABLE_NAME;
-
-    private String columnId = DEFAULT_COLUMN_ID;
-    private String columnName = DEFAULT_COLUMN_NAME;
-    private String columnContent = DEFAULT_COLUMN_CONTENT;
-
-    private String columnUpdateTime = DEFAULT_COLUMN_UPDATE_TIME;
+    private String columnUpdateTime;
     private String prefix = "db:";
 
-    public DbReportProvider(String tableName, String columnId, String columnName, String columnContent, String columnUpdateTime) {
-        this.tableName = tableName;
-        this.columnId = columnId;
-        this.columnName = columnName;
-        this.columnContent = columnContent;
-        this.columnUpdateTime = columnUpdateTime;
+    public DbReportProvider(UReportProperties p) {
+        UReportProperties.DbConfig dbConfig = p.getDbConfig();
+        this.tableName = dbConfig.getTableName();
+        this.columnId = dbConfig.getColumnId();
+        this.columnName = dbConfig.getColumnName();
+        this.columnContent = dbConfig.getColumnContent();
+        this.columnUpdateTime = dbConfig.getColumnUpdateTime();
     }
 
     @Resource
     private JdbcTemplate jdbcTemplate;
 
     @PostConstruct
-    void init(){
+    void init() {
         try {
             // Check if table exists by querying it
-            jdbcTemplate.queryForRowSet("SELECT count(*) FROM " + tableName );
+            jdbcTemplate.queryForRowSet("SELECT count(*) FROM " + tableName);
         } catch (Exception e) {
             // Table doesn't exist, create it
-            String ddl = "create table " + tableName + "(" + 
-                         columnId + " int primary key ," +
-                         columnName + " varchar(80)," + 
-                         columnContent + " longtext," + 
-                         columnUpdateTime + " timestamp)";
+            String ddl = "create table " + tableName + "(" +
+                    columnId + " int primary key ," +
+                    columnName + " varchar(80)," +
+                    columnContent + " longtext," +
+                    columnUpdateTime + " timestamp)";
             jdbcTemplate.execute(ddl);
         }
     }
 
     @Override
     public String loadReport(String file) {
-        Map<String, Object> map = jdbcTemplate.queryForMap("select * from " + tableName + " where " + columnName + "=?", file);
-        String content = (String) map.get(columnContent);
+        try {
+            Map<String, Object> map = jdbcTemplate.queryForMap("select * from " + tableName + " where " + columnName + "=?", file);
 
-        return content;
+            return (String) map.get(columnContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -116,8 +115,13 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public void saveReport(String file, String content) {
-        String sql = "insert into " + tableName + "(" + columnName + "," + columnContent + "," + columnUpdateTime + ") values(?,?,?)";
-        jdbcTemplate.update(sql, file, content, new Date());
+        String id = IdUtil.simpleUUID();
+        String old = this.loadReport(file);
+        if (old == null) {
+            String sql = "insert into " + tableName + "(" + columnId + "," + columnName + "," + columnContent + "," + columnUpdateTime + ") values(?,?,?,?)";
+            jdbcTemplate.update(sql, file, content, new Date());
+        }
+
     }
 
     @Override
