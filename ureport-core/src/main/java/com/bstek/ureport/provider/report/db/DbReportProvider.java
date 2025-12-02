@@ -15,31 +15,23 @@
  ******************************************************************************/
 package com.bstek.ureport.provider.report.db;
 
-import cn.hutool.core.date.DateTime;
-import com.bstek.ureport.exception.ReportException;
 import com.bstek.ureport.provider.report.ReportFile;
 import com.bstek.ureport.provider.report.ReportProvider;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.NoArgsConstructor;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-/**
- * @author Jacky.gao
- * @since 2017年2月11日
- */
+
 @Component
 @ConditionalOnBean(DataSource.class)
 @ConditionalOnMissingBean(DbReportProvider.class)
