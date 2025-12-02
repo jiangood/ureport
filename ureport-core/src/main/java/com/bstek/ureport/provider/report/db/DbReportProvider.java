@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -49,20 +50,27 @@ public class DbReportProvider implements ReportProvider {
     private String columnUpdateTime;
     private String prefix = "db:";
 
-    public DbReportProvider(UReportProperties p) {
+    public DbReportProvider(UReportProperties p, JdbcTemplate jdbcTemplate) {
         UReportProperties.DbConfig dbConfig = p.getDbConfig();
         this.tableName = dbConfig.getTableName();
         this.columnId = dbConfig.getColumnId();
         this.columnName = dbConfig.getColumnName();
         this.columnContent = dbConfig.getColumnContent();
         this.columnUpdateTime = dbConfig.getColumnUpdateTime();
+        this.jdbcTemplate =jdbcTemplate;
+
+        Assert.hasText(tableName, "Table name cannot be empty");
+        Assert.hasText(columnId, "Column id cannot be empty");
+        Assert.hasText(columnName, "Column name cannot be empty");
+        Assert.hasText(columnContent, "Column content cannot be empty");
+        Assert.hasText(columnUpdateTime, "Column updateTime cannot be empty");
+
+        this.init();
     }
 
-    @Resource
     private JdbcTemplate jdbcTemplate;
 
-    @PostConstruct
-    void init() {
+    private void init() {
         try {
             // Check if table exists by querying it
             jdbcTemplate.queryForRowSet("SELECT count(*) FROM " + tableName);
