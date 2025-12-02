@@ -19,11 +19,8 @@ import cn.hutool.core.util.IdUtil;
 import com.bstek.ureport.UReportProperties;
 import com.bstek.ureport.provider.report.ReportFile;
 import com.bstek.ureport.provider.report.ReportProvider;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -35,20 +32,21 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 @Component
 @ConditionalOnBean(DataSource.class)
-@NoArgsConstructor
 public class DbReportProvider implements ReportProvider {
 
+    private static final String PREFIX = "db:";
 
-    private String tableName;
+    private final String tableName;
 
-    private String columnId;
-    private String columnName;
-    private String columnContent;
+    private final String columnId;
+    private final String columnName;
+    private final String columnContent;
 
-    private String columnUpdateTime;
-    private String prefix = "db:";
+    private final String columnUpdateTime;
+
 
     public DbReportProvider(UReportProperties p, JdbcTemplate jdbcTemplate) {
         UReportProperties.DbConfig dbConfig = p.getDbConfig();
@@ -76,11 +74,13 @@ public class DbReportProvider implements ReportProvider {
             jdbcTemplate.queryForRowSet("SELECT count(*) FROM " + tableName);
         } catch (Exception e) {
             // Table doesn't exist, create it
+            log.info("Table doesn't exist, create it");
             String ddl = "create table " + tableName + "(" +
                     columnId + " int primary key ," +
                     columnName + " varchar(80)," +
                     columnContent + " longtext," +
                     columnUpdateTime + " timestamp)";
+            log.info("ddl: {}", ddl);
             jdbcTemplate.execute(ddl);
         }
     }
@@ -135,6 +135,6 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public String getPrefix() {
-        return prefix;
+        return PREFIX;
     }
 }
