@@ -16,6 +16,7 @@
 package com.bstek.ureport.provider.report.db;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.bstek.ureport.UReportProperties;
 import com.bstek.ureport.provider.report.ReportFile;
 import com.bstek.ureport.provider.report.ReportProvider;
@@ -88,8 +89,15 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public String loadReport(String file) {
+        log.debug("加载基于数据库的文件： {}",file);
+        // 移除前缀
+        file = StrUtil.removePrefix(file, PREFIX);
+        log.debug("移除前缀后 {}",file);
+
         try {
-            Map<String, Object> map = jdbcTemplate.queryForMap("select * from " + tableName + " where " + columnName + "=?", file);
+            String sql = "select * from " + tableName + " where " + columnName + "=?";
+            log.debug("生成的SQL：{}",sql);
+            Map<String, Object> map = jdbcTemplate.queryForMap(sql, file);
 
             return (String) map.get(columnContent);
         } catch (Exception e) {
