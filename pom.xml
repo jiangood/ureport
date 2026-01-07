@@ -6,7 +6,7 @@
 	<groupId>io.github.jiangood</groupId>
 	<artifactId>ureport-parent</artifactId>
 
-	<version>1.0.7</version>
+	<version>${revision}</version>
 	<packaging>pom</packaging>
 
 	<name>UReport</name>
@@ -31,6 +31,7 @@
 	</scm>
 
 	<properties>
+		<revision>1.0.8</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
 		<compile.version>17</compile.version>
@@ -189,7 +190,25 @@
 			</plugin>
 
 
-
+			<!--打包时，为了批量修改版本 revision 变成真正的版本号，而不是占位符-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>1.3.0</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<flattenMode>resolveCiFriendliesOnly</flattenMode>
+				</configuration>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 
 		</plugins>

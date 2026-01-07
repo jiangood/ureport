@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.github.jiangood</groupId>
 		<artifactId>ureport-parent</artifactId>
-		<version>1.0.7</version>
+		<version>${revision}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>ureport-console</artifactId>
@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>io.github.jiangood</groupId>
 			<artifactId>ureport-core</artifactId>
-			<version>1.0.5</version>
+			<version>${revision}</version>
 		</dependency>
 		<!--引入AOP依赖-->
 		<dependency>
