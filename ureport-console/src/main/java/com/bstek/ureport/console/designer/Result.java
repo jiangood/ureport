@@ -1,9 +1,9 @@
-package com.bstek.ureport.console.designer.dto;
+package com.bstek.ureport.console.designer;
 
 import lombok.Data;
 
 @Data
-public class Result {
+class Result {
     private String message;
     private boolean success;
 

@@ -18,7 +18,6 @@ package com.bstek.ureport.console.designer;
 import com.bstek.ureport.cache.CacheUtils;
 import com.bstek.ureport.console.BaseAction;
 import com.bstek.ureport.console.cache.TempObjectCache;
-import com.bstek.ureport.console.designer.dto.Result;
 import com.bstek.ureport.console.exception.ReportDesignException;
 import com.bstek.ureport.definition.ReportDefinition;
 import com.bstek.ureport.dsl.ReportParserLexer;
