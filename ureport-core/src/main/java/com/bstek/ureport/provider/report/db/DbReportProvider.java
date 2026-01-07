@@ -90,7 +90,6 @@ public class DbReportProvider implements ReportProvider {
     @Override
     public String loadReport(String file) {
         log.debug("加载基于数据库的文件： {}",file);
-        // 移除前缀
         file = StrUtil.removePrefix(file, PREFIX);
         log.debug("移除前缀后 {}",file);
 
@@ -108,6 +107,10 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public void deleteReport(String file) {
+        log.debug("加载基于数据库的文件： {}",file);
+        file = StrUtil.removePrefix(file, PREFIX);
+        log.debug("移除前缀后 {}",file);
+
         jdbcTemplate.update("delete from " + tableName + " where " + columnName + "=?", file);
     }
 

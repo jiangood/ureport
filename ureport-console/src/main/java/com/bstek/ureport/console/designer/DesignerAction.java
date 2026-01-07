@@ -18,6 +18,7 @@ package com.bstek.ureport.console.designer;
 import com.bstek.ureport.cache.CacheUtils;
 import com.bstek.ureport.console.BaseAction;
 import com.bstek.ureport.console.cache.TempObjectCache;
+import com.bstek.ureport.console.designer.dto.Result;
 import com.bstek.ureport.console.exception.ReportDesignException;
 import com.bstek.ureport.definition.ReportDefinition;
 import com.bstek.ureport.dsl.ReportParserLexer;
@@ -32,9 +33,9 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 
+@Slf4j
 @RestController
 @RequestMapping("ureport/designer")
 public class DesignerAction extends BaseAction {
@@ -146,7 +148,7 @@ public class DesignerAction extends BaseAction {
     }
 
     @RequestMapping("deleteReportFile")
-    public void deleteReportFile(String file) {
+    public Result deleteReportFile(String file) {
         if (file == null) {
             throw new ReportDesignException("Report file can not be null.");
         }
@@ -160,7 +162,9 @@ public class DesignerAction extends BaseAction {
         if (targetReportProvider == null) {
             throw new ReportDesignException("File [" + file + "] not found available report provider.");
         }
+        log.info("删除报表 {}",file);
         targetReportProvider.deleteReport(file);
+        return Result.ok("删除成功");
     }
 
 
