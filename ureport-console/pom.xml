@@ -13,7 +13,6 @@
 		<dependency>
 			<groupId>io.github.jiangood</groupId>
 			<artifactId>ureport-core</artifactId>
-			<version>${revision}</version>
 		</dependency>
 		<!--引入AOP依赖-->
 		<dependency>

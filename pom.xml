@@ -11,7 +11,7 @@
 
 	<name>UReport</name>
 	<description>spring集成</description>
-	<url>https://github.com/tmgg/ureport</url>
+	<url>https://github.com/jiangood/ureport</url>
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
@@ -20,14 +20,14 @@
 	</licenses>
 	<developers>
 		<developer>
-			<name>tmgg</name>
+			<name>jiangood</name>
 			<email>410518072@qq.com</email>
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:git:github.com/tmgg/ureport.git</connection>
-		<developerConnection>scm:git@github.com:tmgg/ureport.git</developerConnection>
-		<url>https://github.com/tmgg/ureport/tree/master</url>
+		<connection>scm:git:git:github.com/jiangood/ureport.git</connection>
+		<developerConnection>scm:git@github.com:jiangood/ureport.git</developerConnection>
+		<url>https://github.com/jiangood/ureport/tree/master</url>
 	</scm>
 
 	<properties>
@@ -45,7 +45,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.8</version>
+		<version>3.5.9</version>
 	</parent>
 	<modules>
 		<module>ureport-core</module>
@@ -61,6 +61,15 @@
 		</dependency>
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.github.jiangood</groupId>
+				<artifactId>ureport-core</artifactId>
+				<version>${revision}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 
 	<profiles>
@@ -189,12 +198,10 @@
 				</configuration>
 			</plugin>
 
-
-			<!--打包时，为了批量修改版本 revision 变成真正的版本号，而不是占位符-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.3.0</version>
+				<version>1.1.0</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>
@@ -207,10 +214,15 @@
 							<goal>flatten</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
-
-
 		</plugins>
 	</build>
 
