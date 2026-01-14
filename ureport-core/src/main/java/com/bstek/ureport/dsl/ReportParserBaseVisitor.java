@@ -1,4 +1,4 @@
-// Generated from ReportParser.g4 by ANTLR 4.5.3
+// Generated from D:/ws/ureport/ureport-core/dsl/ReportParser.g4 by ANTLR 4.13.2
 package com.bstek.ureport.dsl;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
+@SuppressWarnings("CheckReturnValue")
 public class ReportParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements ReportParserVisitor<T> {
 	/**
 	 * {@inheritDoc}

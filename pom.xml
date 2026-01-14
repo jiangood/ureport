@@ -31,7 +31,7 @@
 	</scm>
 
 	<properties>
-		<revision>1.0.11</revision>
+		<revision>1.0.12</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
 		<compile.version>17</compile.version>
