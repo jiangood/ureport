@@ -44,7 +44,9 @@
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
-			<version>4.13.0</version>
+			<!--<version>4.13.0</version>-->
+			<!--固定4.5.3,请勿升级 参考 ReportLexer.java-->
+			<version>4.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
