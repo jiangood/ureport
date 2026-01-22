@@ -34,7 +34,7 @@ public class FileReportProvider implements ReportProvider {
     private final File storeDir;
 
     public FileReportProvider(UReportProperties props) throws IOException {
-        storeDir = new File(props.getFileStoreDir());
+        storeDir = new File(props.getFileDir());
         FileUtils.forceMkdir(storeDir);
     }
 

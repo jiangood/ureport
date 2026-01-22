@@ -29,8 +29,20 @@ https://github.com/jiangood/ureport-example
 ## 文档
 https://www.w3cschool.cn/ureport/
 
-# 新增函数
-## 字符串函数
+# 新增功能
+## 新增 字符串函数
 - 转数字 toInt
 - 减法（参考减法-） sub
+## 增加数据库存储
+检测到 DataSource Bean 时，自动启用数据库存储。 
 
+会在系统中创建 sys_ureport 表。
+
+如需自定义表名，修改springboot的配置文件，增加以下配置
+```
+ureport.db.tableName
+ureport.db.columnId 
+ureport.db.columnName 
+ureport.db.columnContent 
+ureport.db.columnUpdateTime 
+```

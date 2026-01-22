@@ -15,6 +15,7 @@
  ******************************************************************************/
 package com.bstek.ureport.provider.report.db;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bstek.ureport.UReportProperties;
@@ -51,13 +52,13 @@ public class DbReportProvider implements ReportProvider {
 
 
     public DbReportProvider(UReportProperties p, JdbcTemplate jdbcTemplate) {
-        UReportProperties.DbConfig dbConfig = p.getDbConfig();
+        UReportProperties.DbConfig dbConfig = p.getDb();
         this.tableName = dbConfig.getTableName();
         this.columnId = dbConfig.getColumnId();
         this.columnName = dbConfig.getColumnName();
         this.columnContent = dbConfig.getColumnContent();
         this.columnUpdateTime = dbConfig.getColumnUpdateTime();
-        this.jdbcTemplate =jdbcTemplate;
+        this.jdbcTemplate = jdbcTemplate;
 
         Assert.hasText(tableName, "Table name cannot be empty");
         Assert.hasText(columnId, "Column id cannot be empty");
@@ -89,27 +90,29 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public String loadReport(String file) {
-        log.debug("加载基于数据库的文件： {}",file);
+        log.debug("加载基于数据库的文件： {}", file);
         file = StrUtil.removePrefix(file, PREFIX);
-        log.debug("移除前缀后 {}",file);
+        log.debug("移除前缀后 {}", file);
 
-        try {
-            String sql = "select * from " + tableName + " where " + columnName + "=?";
-            log.debug("生成的SQL：{}",sql);
-            Map<String, Object> map = jdbcTemplate.queryForMap(sql, file);
+        String sql = "select * from " + tableName + " where " + columnName + "=?";
+        log.debug("生成的SQL：{}", sql);
 
-            return (String) map.get(columnContent);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // queryForMap会抛出异常，这里简单用List 表示
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, file);
+        if (CollUtil.isEmpty(list)) {
             return null;
         }
+        Map<String, Object> map = list.get(0);
+
+        return (String) map.get(columnContent);
+
     }
 
     @Override
     public void deleteReport(String file) {
-        log.debug("加载基于数据库的文件： {}",file);
+        log.debug("加载基于数据库的文件： {}", file);
         file = StrUtil.removePrefix(file, PREFIX);
-        log.debug("移除前缀后 {}",file);
+        log.debug("移除前缀后 {}", file);
 
         jdbcTemplate.update("delete from " + tableName + " where " + columnName + "=?", file);
     }
@@ -121,7 +124,7 @@ public class DbReportProvider implements ReportProvider {
         List<ReportFile> list = new ArrayList<>();
         for (Map<String, Object> map : mapList) {
             String name = (String) map.get(columnName);
-            if(name.startsWith(PREFIX)){
+            if (name.startsWith(PREFIX)) {
                 name = name.substring(PREFIX.length());
             }
             Timestamp updateTime = (Timestamp) map.get(columnUpdateTime);
