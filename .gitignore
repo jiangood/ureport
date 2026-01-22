@@ -5,3 +5,4 @@ node_modules/
 /ureport2-console/src/main/resources/report/
 .flattened-pom.xml
 /ureport-core/gen/
+/ureport-js/pnpm-lock.yaml

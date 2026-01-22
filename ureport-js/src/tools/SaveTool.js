@@ -34,8 +34,10 @@ export default class SaveTool extends Tool{
                     type:'POST',
                     success:function(rs){
                         console.log('服务器端返回', rs)
-                        alert(`保存成功！`);
-                        resetDirty();
+                        alert('保存结果：' +rs.message);
+                        if(rs.success){
+                            resetDirty();
+                        }
                     },
                     error:function(response){
                         if(response && response.responseText){

@@ -118,12 +118,15 @@ export default class SaveDialog{
                 url:window._server+"/designer/saveReportFile",
                 data:{file:fileName,content:_this.content},
                 type:'POST',
-                success:function(){
-                    alert(`保存成功！`);
-                    window._reportFile=fileName;
-                    _this.context.fileInfo.setFile(fileName);
-                    resetDirty();
-                    _this.dialog.modal('hide');
+                success:function(rs){
+                    console.log('服务器端返回', rs)
+                    alert('保存结果：' +rs.message);
+                    if(rs.success){
+                        window._reportFile=fileName;
+                        _this.context.fileInfo.setFile(fileName);
+                        resetDirty();
+                        _this.dialog.modal('hide');
+                    }
                 },
                 error:function(response){
                     if(response && response.responseText){

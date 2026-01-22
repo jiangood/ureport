@@ -90,6 +90,7 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public String loadReport(String file) {
+        file = cleanPrefix(file);
         log.debug("加载基于数据库的文件： {}", file);
         file = StrUtil.removePrefix(file, PREFIX);
         log.debug("移除前缀后 {}", file);
@@ -111,10 +112,15 @@ public class DbReportProvider implements ReportProvider {
     @Override
     public void deleteReport(String file) {
         log.debug("加载基于数据库的文件： {}", file);
-        file = StrUtil.removePrefix(file, PREFIX);
+        file = cleanPrefix(file);
         log.debug("移除前缀后 {}", file);
 
         jdbcTemplate.update("delete from " + tableName + " where " + columnName + "=?", file);
+    }
+
+    private static String cleanPrefix(String file) {
+        file = StrUtil.removePrefix(file, PREFIX);
+        return file;
     }
 
     @Override
@@ -141,14 +147,21 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public void saveReport(String file, String content) {
+        log.info("准备保存 {}", file);
         String old = this.loadReport(file);
         if (old == null) {
             String sql = "insert into " + tableName + "(" + columnId + "," + columnName + "," + columnContent + "," + columnUpdateTime + ") values(?,?,?,?)";
-            jdbcTemplate.update(sql, IdUtil.fastSimpleUUID(), file, content, new Date());
+            log.info("插入记录SQL: {}", sql);
+            int rows = jdbcTemplate.update(sql, IdUtil.fastSimpleUUID(), file, content, new Date());
+            log.info("影响行数:{}", rows);
+            Assert.state(rows == 1, "保存报表失败");
             return;
         }
         String sql = "update " + tableName + " set " + columnContent + "=?, " + columnUpdateTime + "=? where " + columnName + "=?";
-        jdbcTemplate.update(sql, content, new Date(), file);
+        log.info("更新记录 SQL: {}", sql);
+        int rows = jdbcTemplate.update(sql, content, new Date(), file);
+        log.info("影响行数:{}", rows);
+        Assert.state(rows == 1, "更新报表失败");
     }
 
     @Override

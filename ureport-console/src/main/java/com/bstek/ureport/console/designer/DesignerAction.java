@@ -37,10 +37,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.io.IOException;
@@ -168,7 +165,7 @@ public class DesignerAction extends BaseAction {
 
 
     @RequestMapping("saveReportFile")
-    public void saveReportFile(@RequestParam String file, @RequestParam String content) {
+    public Result saveReportFile(@RequestParam String file, @RequestParam String content) {
         content = decodeContent(content);
         file = decode(file);
 
@@ -187,6 +184,7 @@ public class DesignerAction extends BaseAction {
         ReportDefinition reportDef = reportParser.parse(content, file);
         reportRender.rebuildReportDefinition(reportDef);
         CacheUtils.cacheReportDefinition(file, reportDef);
+        return Result.ok("保存成功");
     }
 
     /**
@@ -204,6 +202,12 @@ public class DesignerAction extends BaseAction {
         for (ReportProvider provider : providers) {
             reportProviders.add(provider);
         }
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    public Result handleException(Exception e) {
+       return Result.err(e.getMessage());
     }
 
 }

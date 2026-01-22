@@ -26,8 +26,10 @@ ureport用起来挺顺手，为了简化修复bug及新增功能，将其修改�
 可参考示例项目
 https://github.com/jiangood/ureport-example
 
-## 文档
+## 原始文档
 https://www.w3cschool.cn/ureport/
+
+
 
 # 新增功能
 ## 新增 字符串函数
@@ -38,11 +40,21 @@ https://www.w3cschool.cn/ureport/
 
 会在系统中创建 sys_ureport 表。
 
-如需自定义表名，修改springboot的配置文件，增加以下配置
+如需自定义表名，修改springboot的配置文件，编辑以下配置
+```yaml
+ureport:
+  db:
+    table-name: sys_ureport
+    column-id: id 
+    column-name: file
+    column-content: content
+    column-update-time: update_time
 ```
-ureport.db.tableName
-ureport.db.columnId 
-ureport.db.columnName 
-ureport.db.columnContent 
-ureport.db.columnUpdateTime 
+
+# 问题
+## 如何显示详细日志
+```yaml
+logging:
+  level:
+    com.bstek.ureport: debug
 ```
