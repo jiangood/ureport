@@ -46,7 +46,7 @@ ureport:
   db:
     table-name: sys_ureport
     column-id: id 
-    column-name: file
+    column-name: file_name
     column-content: content
     column-update-time: update_time
 ```

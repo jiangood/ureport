@@ -147,6 +147,7 @@ public class DbReportProvider implements ReportProvider {
 
     @Override
     public void saveReport(String file, String content) {
+        file = cleanPrefix(file);
         log.info("准备保存 {}", file);
         String old = this.loadReport(file);
         if (old == null) {
@@ -158,7 +159,7 @@ public class DbReportProvider implements ReportProvider {
             return;
         }
         String sql = "update " + tableName + " set " + columnContent + "=?, " + columnUpdateTime + "=? where " + columnName + "=?";
-        log.info("更新记录 SQL: {}", sql);
+        log.info("更新记录 SQL: {} ", sql);
         int rows = jdbcTemplate.update(sql, content, new Date(), file);
         log.info("影响行数:{}", rows);
         Assert.state(rows == 1, "更新报表失败");

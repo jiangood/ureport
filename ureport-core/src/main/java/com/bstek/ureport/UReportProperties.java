@@ -29,7 +29,7 @@ public class UReportProperties {
         private String tableName = "sys_ureport";
 
         private String columnId = "id";
-        private String columnName = "file";
+        private String columnName = "file_name";
         private String columnContent = "content";
         private String columnUpdateTime = "update_time";
     }
