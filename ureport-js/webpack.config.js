@@ -12,7 +12,7 @@ module.exports={
     },
     output:{
        // path:path.resolve('../ureport2-console/src/main/resources/ureport-asserts/js'),
-        path:path.resolve('../ureport2-console/src/main/resources/static/ureport/res/ureport-asserts/js'),
+        path:path.resolve('../ureport-console/src/main/resources/static/ureport/res/ureport-asserts/js'),
         filename:'[name].bundle.js'
     },
     optimization: {
